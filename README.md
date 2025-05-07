@@ -1,4 +1,4 @@
-# VegeHub on HACS
+# VegeHub on Home Assistant
 
 [![vegetronix_badge](https://img.shields.io/badge/VEGETRONIX-VEGEHUB-green)](https://www.vegetronix.com/Products/VG-HUB-RELAY/)
 
@@ -14,7 +14,7 @@ The **easiest** way to install this integration is through the Home Assistant Co
 
 Once HACS is installed, open it in Home Assistant, and search for **VegeHub**. Click the VegeHub integration, and then click `install`.
 
-If the integration does not show up in a HACS search, you can also add the integration as a `Custom repository` buy clicking the three dots in the top right corner of HACS and selecting `Custom repositories`. There you can add the URL of this repository and set the `type` to `integration`, then HACS will add it to its list of integrations.
+If the integration does not show up in a HACS search, you can also add the integration as a `Custom repository` by clicking the three dots in the top right corner of HACS and selecting `Custom repositories`. There you can add the URL of this repository and set the `type` to `integration`, then HACS will add it to its list of integrations.
 
 ### Manual Install
 
@@ -34,4 +34,5 @@ Once your device is set up in Home Assistant, you can go into the `Settings->Dev
 If you click your device under `Integration entries`, you can use the pencil icon in the top bar to **change its name**, or click the individual sensors or switches to change their **names, icons, units of measurement**, etc.
 
 > [!IMPORTANT]  
-> When the VegeHub gets set up, it points its data updates at your Home Assistant's IP address. If your Home Assistant instance changes IP address, the VegeHub will no longer be able to send it data, and you will have to do the setup process over again.
+> When the VegeHub gets set up, it points its data updates at your Home Assistant's IP address. If your Home Assistant instance changes IP address, the VegeHub will no longer be able to send it data, and you will have to do the setup process over again.  
+> To avoid this, you can set a static IP address for your Home Assistant
