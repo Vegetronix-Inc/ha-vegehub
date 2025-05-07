@@ -6,7 +6,6 @@ from typing import Any
 
 from aiohttp.hdrs import METH_POST
 from aiohttp.web import Request, Response
-from vegehub import VegeHub
 
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.components.webhook import (
@@ -21,6 +20,7 @@ from homeassistant.const import (
     EVENT_HOMEASSISTANT_STOP,
 )
 from homeassistant.core import HomeAssistant
+from vegehub import VegeHub
 
 from .const import DOMAIN, NAME, PLATFORMS
 from .coordinator import VegeHubConfigEntry, VegeHubCoordinator
@@ -50,6 +50,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: VegeHubConfigEntry) -> b
 
     async def register_webhook() -> None:
         webhook_name = f"{NAME} {device_mac}"
+        if entry.data[CONF_WEBHOOK_ID] in hass.data.get("webhook", {}):
+            webhook_unregister(hass, entry.data[CONF_WEBHOOK_ID])
 
         webhook_register(
             hass,

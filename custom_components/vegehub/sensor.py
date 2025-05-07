@@ -1,25 +1,44 @@
 """Sensor configuration for VegeHub integration."""
 
 from itertools import count
+import logging
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
 )
-from homeassistant.const import UnitOfElectricPotential
+from homeassistant.const import PERCENTAGE, UnitOfElectricPotential, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from vegehub import therm200_transform, vh400_transform
 
+from .const import OPTION_DATA_TYPE_CHOICES
 from .coordinator import VegeHubConfigEntry, VegeHubCoordinator
 from .entity import VegeHubEntity
 
+_LOGGING = logging.getLogger(__name__)
+
 SENSOR_TYPES: dict[str, SensorEntityDescription] = {
-    "analog_sensor": SensorEntityDescription(
+    OPTION_DATA_TYPE_CHOICES[0]: SensorEntityDescription(
         key="analog_sensor",
         translation_key="analog_sensor",
         device_class=SensorDeviceClass.VOLTAGE,
         native_unit_of_measurement=UnitOfElectricPotential.VOLT,
+        suggested_display_precision=2,
+    ),
+    OPTION_DATA_TYPE_CHOICES[1]: SensorEntityDescription(
+        key="vh400_sensor",
+        translation_key="vh400_sensor",
+        device_class=SensorDeviceClass.MOISTURE,
+        native_unit_of_measurement=PERCENTAGE,
+        suggested_display_precision=2,
+    ),
+    OPTION_DATA_TYPE_CHOICES[2]: SensorEntityDescription(
+        key="therm200_sensor",
+        translation_key="therm200_sensor",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         suggested_display_precision=2,
     ),
     "battery": SensorEntityDescription(
@@ -45,12 +64,24 @@ async def async_setup_entry(
     # each sensor. This index is 1-based.
     update_index = count(1)
 
+    _LOGGING.debug("Options contents: %s", config_entry.options)
+
     # Add each analog sensor input
     for _i in range(coordinator.vegehub.num_sensors):
+        index = next(update_index)
+        data_type = config_entry.options.get(
+            f"data_type_{index}", OPTION_DATA_TYPE_CHOICES[0]
+        )
+        _LOGGING.debug(
+            "Sensor %s: %s = %s",
+            _i,
+            f"data_type_{index}",
+            data_type,
+        )
         sensor = VegeHubSensor(
-            index=next(update_index),
+            index=index,
             coordinator=coordinator,
-            description=SENSOR_TYPES["analog_sensor"],
+            description=SENSOR_TYPES[data_type],
         )
         sensors.append(sensor)
 
@@ -69,8 +100,6 @@ async def async_setup_entry(
 class VegeHubSensor(VegeHubEntity, SensorEntity):
     """Class for VegeHub Analog Sensors."""
 
-    _attr_device_class = SensorDeviceClass.VOLTAGE
-    _attr_native_unit_of_measurement = UnitOfElectricPotential.VOLT
     _attr_suggested_display_precision = 2
 
     def __init__(
@@ -84,13 +113,28 @@ class VegeHubSensor(VegeHubEntity, SensorEntity):
         self.entity_description = description
         # Set unique ID for pulling data from the coordinator
         self._attr_unique_id = f"{self._mac_address}_{index}".lower()
-        if description.key == "analog_sensor":
+        if description.key != "battery":
             self._attr_translation_placeholders = {"index": str(index)}
         self._attr_available = False
+        self._attr_device_class = description.device_class
+        self._attr_native_unit_of_measurement = description.native_unit_of_measurement
 
     @property
     def native_value(self) -> float | None:
         """Return the sensor's current value."""
         if self.coordinator.data is None or self._attr_unique_id is None:
             return None
-        return self.coordinator.data.get(self._attr_unique_id)
+        val = self.coordinator.data.get(self._attr_unique_id)
+        _LOGGING.debug(
+            "Sensor %s: %s = %s",
+            self._attr_unique_id,
+            self.entity_description.key,
+            val,
+        )
+        if self.entity_description.key == "vh400_sensor":
+            # Convert the vh400 sensor value to percentage
+            return vh400_transform(val)
+        if self.entity_description.key == "therm200_sensor":
+            # Convert the therm200 sensor value to Celsius
+            return therm200_transform(val)
+        return val

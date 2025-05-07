@@ -14,8 +14,8 @@
         }
       },
       "zeroconf_confirm": {
-        "title": "[%key:component::vegehub::config::step::user::title%]",
-        "description": "[%key:component::vegehub::config::step::user::description%]"
+        "title": "Set up VegeHub",
+        "description": "Do you want to set up this VegeHub?"
       }
     },
     "error": {
@@ -36,8 +36,48 @@
       "analog_sensor": {
         "name": "Input {index}"
       },
+      "vh400_sensor": {
+        "name": "Input {index} (moisture)"
+      },
+      "therm200_sensor": {
+        "name": "Input {index} (temperature)"
+      },
       "battery": {
         "name": "Battery"
+      }
+    },
+    "switch": {
+      "switch": {
+        "name": "Actuator {index}"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure VegeHub",
+        "data": {
+          "user_act_duration": "Default actuator duration (in seconds)",
+          "data_type_1": "Input 1 sensor type",
+          "data_type_2": "Input 2 sensor type",
+          "data_type_3": "Input 3 sensor type",
+          "data_type_4": "Input 4 sensor type",
+          "data_type_5": "Input 5 sensor type",
+          "data_type_6": "Input 6 sensor type",
+          "data_type_7": "Input 7 sensor type",
+          "data_type_8": "Input 8 sensor type"
+        },
+        "data_description": {
+          "user_act_duration": "Length of time that an actuator command will endure",
+          "data_type_1": "Select the type of sensor connected to input 1",
+          "data_type_2": "Select the type of sensor connected to input 2",
+          "data_type_3": "Select the type of sensor connected to input 3",
+          "data_type_4": "Select the type of sensor connected to input 4",
+          "data_type_5": "Select the type of sensor connected to input 5",
+          "data_type_6": "Select the type of sensor connected to input 6",
+          "data_type_7": "Select the type of sensor connected to input 7",
+          "data_type_8": "Select the type of sensor connected to input 8"
+        }
       }
     }
   }

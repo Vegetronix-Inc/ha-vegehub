@@ -5,11 +5,10 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from vegehub import VegeHub, update_data_to_latest_dict
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from vegehub import VegeHub, update_data_to_latest_dict
 
 _LOGGER = logging.getLogger(__name__)
 
