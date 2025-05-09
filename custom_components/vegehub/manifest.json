@@ -9,6 +9,6 @@
   "issue_tracker": "https://github.com/Vegetronix-Inc/ha-vegehub/issues",
   "quality_scale": "bronze",
   "requirements": ["vegehub==0.1.21"],
-  "version": "0.1.0",
+  "version": "0.2.0",
   "zeroconf": ["_vege._tcp.local."]
 }
