@@ -1,14 +1,23 @@
 {
   "domain": "vegehub",
   "name": "Vegetronix VegeHub",
-  "codeowners": ["@Vegetronix-Inc"],
+  "codeowners": [
+    "@Vegetronix-Inc"
+  ],
   "config_flow": true,
-  "dependencies": ["http", "webhook"],
+  "dependencies": [
+    "http",
+    "webhook"
+  ],
   "documentation": "https://github.com/Vegetronix-Inc/ha-vegehub",
   "iot_class": "local_push",
   "issue_tracker": "https://github.com/Vegetronix-Inc/ha-vegehub/issues",
   "quality_scale": "bronze",
-  "requirements": ["vegehub==0.1.21"],
-  "version": "0.2.0",
-  "zeroconf": ["_vege._tcp.local."]
+  "requirements": [
+    "vegehub==0.1.23"
+  ],
+  "version": "0.3.0",
+  "zeroconf": [
+    "_vege._tcp.local."
+  ]
 }

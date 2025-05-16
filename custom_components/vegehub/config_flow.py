@@ -211,9 +211,9 @@ class VegehubOptionsFlowHandler(OptionsFlow):
             options_schema.update(
                 {
                     vol.Required(
-                        f"data_type_{i + 1}",
+                        f"data_type_{i}",
                         default=self.config_entry.options.get(
-                            f"data_type_{i + 1}", OPTION_DATA_TYPE_CHOICES[0]
+                            f"data_type_{i}", OPTION_DATA_TYPE_CHOICES[0]
                         ),
                     ): vol.In(OPTION_DATA_TYPE_CHOICES)
                     for i in range(num_sensors)

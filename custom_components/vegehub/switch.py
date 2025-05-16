@@ -37,10 +37,6 @@ async def async_setup_entry(
     switches: list[VegeHubSwitch] = []
     coordinator = config_entry.runtime_data
 
-    # This is the index in the updates from the VegeHub that will correspond to
-    # each switch. This index is 1-based. It starts at the number of actuators
-    # plus 1 because of the battery sensor. Plus 1 because update_index is 1-based.
-    update_index = count(coordinator.vegehub.num_sensors + 1 + 1)
     # This index corresponds to the actuator number in the VegeHub.
     index = count(0)
 
@@ -48,7 +44,6 @@ async def async_setup_entry(
     for _i in range(coordinator.vegehub.num_actuators):
         switch = VegeHubSwitch(
             index=next(index),
-            update_index=next(update_index),
             duration=int(config_entry.options.get("user_act_duration", 0) or 600),
             coordinator=coordinator,
             description=SWITCH_TYPES["switch"],
@@ -66,7 +61,6 @@ class VegeHubSwitch(VegeHubEntity, SwitchEntity):
     def __init__(
         self,
         index: int,
-        update_index: int,
         duration: int,
         coordinator: VegeHubCoordinator,
         description: SwitchEntityDescription,
@@ -75,7 +69,8 @@ class VegeHubSwitch(VegeHubEntity, SwitchEntity):
         super().__init__(coordinator)
         self.entity_description = description
         # Set unique ID for pulling data from the coordinator
-        self._attr_unique_id = f"{self._mac_address}_{update_index}".lower()
+        self.data_key = f"actuator_{index}".lower()
+        self._attr_unique_id = f"{self._mac_address}_{self.data_key}"
         self._attr_translation_placeholders = {"index": str(index + 1)}
         self._attr_available = False
         self.index = index
@@ -86,7 +81,7 @@ class VegeHubSwitch(VegeHubEntity, SwitchEntity):
         """Return the switch's current value."""
         if self.coordinator.data is None or self._attr_unique_id is None:
             return STATE_OFF
-        if self.coordinator.data.get(self._attr_unique_id, 0) > 0:
+        if self.coordinator.data.get(self.data_key, 0) > 0:
             return STATE_ON
         return STATE_OFF
 

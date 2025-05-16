@@ -61,22 +61,14 @@ async def async_setup_entry(
     coordinator = config_entry.runtime_data
 
     # This is the index in the updates from the VegeHub that will correspond to
-    # each sensor. This index is 1-based.
-    update_index = count(1)
-
-    _LOGGING.debug("Options contents: %s", config_entry.options)
+    # each sensor.
+    update_index = count(0)
 
     # Add each analog sensor input
     for _i in range(coordinator.vegehub.num_sensors):
         index = next(update_index)
         data_type = config_entry.options.get(
             f"data_type_{index}", OPTION_DATA_TYPE_CHOICES[0]
-        )
-        _LOGGING.debug(
-            "Sensor %s: %s = %s",
-            _i,
-            f"data_type_{index}",
-            data_type,
         )
         sensor = VegeHubSensor(
             index=index,
@@ -112,9 +104,12 @@ class VegeHubSensor(VegeHubEntity, SensorEntity):
         super().__init__(coordinator)
         self.entity_description = description
         # Set unique ID for pulling data from the coordinator
-        self._attr_unique_id = f"{self._mac_address}_{index}".lower()
-        if description.key != "battery":
-            self._attr_translation_placeholders = {"index": str(index)}
+        if description.key == "battery":
+            self.data_key = "battery"
+        else:
+            self.data_key = f"analog_{index}".lower()
+            self._attr_translation_placeholders = {"index": str(index + 1)}
+        self._attr_unique_id = f"{self._mac_address}_{self.data_key}"
         self._attr_available = False
         self._attr_device_class = description.device_class
         self._attr_native_unit_of_measurement = description.native_unit_of_measurement
@@ -124,7 +119,7 @@ class VegeHubSensor(VegeHubEntity, SensorEntity):
         """Return the sensor's current value."""
         if self.coordinator.data is None or self._attr_unique_id is None:
             return None
-        val = self.coordinator.data.get(self._attr_unique_id)
+        val = self.coordinator.data.get(self.data_key)
         _LOGGING.debug(
             "Sensor %s: %s = %s",
             self._attr_unique_id,

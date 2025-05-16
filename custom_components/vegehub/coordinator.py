@@ -8,7 +8,7 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from vegehub import VegeHub, update_data_to_latest_dict
+from vegehub import VegeHub, update_data_to_ha_dict
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,7 +36,11 @@ class VegeHubCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     async def update_from_webhook(self, data: dict) -> None:
         """Process and update data from webhook."""
-        sensor_data = update_data_to_latest_dict(data)
+        sensor_data = update_data_to_ha_dict(
+            data, self.vegehub.num_sensors, self.vegehub.num_actuators
+        )
+        _LOGGER.debug("Received raw data from webhook: %s, %s", data, self.device_id)
+        _LOGGER.debug("Data processed into: %s", sensor_data)
         if self.data:
             existing_data: dict = self.data
             existing_data.update(sensor_data)
