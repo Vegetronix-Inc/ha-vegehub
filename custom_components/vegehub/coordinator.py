@@ -37,7 +37,10 @@ class VegeHubCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def update_from_webhook(self, data: dict) -> None:
         """Process and update data from webhook."""
         sensor_data = update_data_to_ha_dict(
-            data, self.vegehub.num_sensors, self.vegehub.num_actuators, self.vegehub.is_ac
+            data,
+            self.vegehub.num_sensors,
+            self.vegehub.num_actuators,
+            self.vegehub.is_ac,
         )
         _LOGGER.debug("Received raw data from webhook: %s, %s", data, self.device_id)
         _LOGGER.debug("Data processed into: %s", sensor_data)

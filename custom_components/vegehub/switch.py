@@ -69,7 +69,7 @@ class VegeHubSwitch(VegeHubEntity, SwitchEntity):
         super().__init__(coordinator)
         self.entity_description = description
         # Set unique ID for pulling data from the coordinator
-        self.data_key = f"actuator_{index}".lower()
+        self.data_key = f"actuator_{index}"
         self._attr_unique_id = f"{self._mac_address}_{self.data_key}"
         self._attr_translation_placeholders = {"index": str(index + 1)}
         self._attr_available = False

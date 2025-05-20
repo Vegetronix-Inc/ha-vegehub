@@ -78,13 +78,14 @@ async def async_setup_entry(
         sensors.append(sensor)
 
     # Add the battery sensor
-    sensors.append(
-        VegeHubSensor(
-            index=next(update_index),
-            coordinator=coordinator,
-            description=SENSOR_TYPES["battery"],
+    if not coordinator.vegehub.is_ac:
+        sensors.append(
+            VegeHubSensor(
+                index=next(update_index),
+                coordinator=coordinator,
+                description=SENSOR_TYPES["battery"],
+            )
         )
-    )
 
     async_add_entities(sensors)
 
@@ -107,7 +108,7 @@ class VegeHubSensor(VegeHubEntity, SensorEntity):
         if description.key == "battery":
             self.data_key = "battery"
         else:
-            self.data_key = f"analog_{index}".lower()
+            self.data_key = f"analog_{index}"
             self._attr_translation_placeholders = {"index": str(index + 1)}
         self._attr_unique_id = f"{self._mac_address}_{self.data_key}"
         self._attr_available = False
@@ -120,12 +121,17 @@ class VegeHubSensor(VegeHubEntity, SensorEntity):
         if self.coordinator.data is None or self._attr_unique_id is None:
             return None
         val = self.coordinator.data.get(self.data_key)
+
+        if not val:
+            return None
+
         _LOGGING.debug(
             "Sensor %s: %s = %s",
             self._attr_unique_id,
             self.entity_description.key,
             val,
         )
+
         if self.entity_description.key == "vh400_sensor":
             # Convert the vh400 sensor value to percentage
             return vh400_transform(val)
