@@ -10,9 +10,14 @@ This integration allows Home Assistant to automatically detect the presence of *
 
 ### HACS Install
 
-The **easiest** way to install this integration is through the Home Assistant Community Store ([HACS](https://hacs.xyz/)). Instructions for installing HACS can be found at [their website](https://hacs.xyz/docs/use/).
+> [!NOTE]  
+> The VegeHub integration has **not yet been merged** into HACS default integrations, so it does not currently show up in a search on HACS. Until it gets merged, the simplest way to install the VegeHub integration is as a **"Custom Repository"** on HACS. See [below](#custom-repository).
 
-Once HACS is installed, open it in Home Assistant, and search for **VegeHub**. Click the VegeHub integration, and then click `install`.
+~~The **easiest** way to install this integration is through the Home Assistant Community Store ([HACS](https://hacs.xyz/)). Instructions for installing HACS can be found at [their website](https://hacs.xyz/docs/use/).~~
+
+~~Once HACS is installed, open it in Home Assistant, and search for **VegeHub**. Click the VegeHub integration, and then click `install`.~~
+
+### Custom Repository
 
 If the integration does not show up in a HACS search, you can also add the integration as a `Custom repository` by clicking the three dots in the top right corner of HACS and selecting `Custom repositories`. There you can add the URL of this repository and set the `type` to `integration`, then HACS will add it to its list of integrations.
 
