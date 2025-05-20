@@ -21,13 +21,15 @@ This integration allows Home Assistant to automatically detect the presence of *
 
 If the integration does not show up in a HACS search, you can also add the integration as a `Custom repository` by clicking the three dots in the top right corner of HACS and selecting `Custom repositories`. There you can add the URL of this repository and set the `type` to `integration`, then HACS will add it to its list of integrations.
 
+You can then search for, and install the integration.
+
 ### Manual Install
 
 The integration can also be installed **manually** by copying the `vegehub` folder from the `custom_components` folder in this project into the `config->custom_components` folder in your Home Assistant instance. After the folder is copied into Home Assistant, Home Assistant **must be restarted** so that it can install the integration.
 
 ## Instructions
 
-Once you have installed the integration, Home Assistant will start **monitoring** the local network for VegeHub devices. When it identifies one, it will present it in the `Discovered` devices in the `Settings->Devices & Services` menu. Click `Add`, and Home Assistant will contact the VegeHub, and set it up to report its data to Home Assistant.
+Once you have installed the integration and restarted Home Assistant, Home Assistant will start **monitoring** the local network for VegeHub devices. When it identifies one, it will present it in the `Discovered` devices in the `Settings->Devices & Services` menu. Click `Add`, and Home Assistant will contact the VegeHub, and set it up to report its data to Home Assistant.
 
 > [!NOTE]  
 > If your VegeHub does not show up in Home Assistant or setup fails, make sure the device is **awake**, and connected to the **same network** as Home Assistant. Also make sure that the VegeHub device is **awake** throughout the integration setup process.
@@ -38,6 +40,11 @@ Once your device is set up in Home Assistant, you can go into the `Settings->Dev
 
 If you click your device under `Integration entries`, you can use the pencil icon in the top bar to **change its name**, or click the individual sensors or switches to change their **names, icons, units of measurement**, etc.
 
+> [!NOTE]  
+> The VegeHub can only receive commands from Home Assistant if it is **awake**. If you try to flip a switch in Home Assistant and it does not work, make sure the VegeHub is **awake** to receive the command. If you want your VegeHub to always be able to receive commands, it will have to be configured to run on a `power adapter` rather than `batteries`. This setting can be changed in the VegeHub's **web interface**.
+
+---
+
 > [!IMPORTANT]  
-> When the VegeHub gets set up, it points its data updates at your Home Assistant's IP address. If your Home Assistant instance changes IP address, the VegeHub will no longer be able to send it data, and you will have to do the setup process over again.  
-> To avoid this, you can set a static IP address for your Home Assistant
+> When the VegeHub gets set up, it points its data updates at your Home Assistant's **IP address**. If your Home Assistant instance **changes IP address**, the VegeHub will **no longer be able to send it data**, and you will have to do the setup process over again.  
+> To avoid this, you should set a **static IP address** for your Home Assistant
