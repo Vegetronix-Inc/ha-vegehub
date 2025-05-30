@@ -1,6 +1,6 @@
 # VegeHub on Home Assistant
 
-[![vegetronix_badge](https://img.shields.io/badge/VEGETRONIX-VEGEHUB-green)](https://www.vegetronix.com/Products/VG-HUB-RELAY/)
+[![vegetronix_badge](https://img.shields.io/badge/VEGETRONIX-VEGEHUB-green)](https://www.vegetronix.com/Products/VG-HUB-RELAY/) [![hacs_badge](https://img.shields.io/badge/HACS-default-blue)](https://github.com/hacs/default)
 
 This is a [Home Assistant](https://www.home-assistant.io/) integration designed to interface with the [Vegetronix VegeHub](https://www.vegetronix.com/Products/VG-HUB-RELAY/). The version in this repository is intended to be accessed through [HACS](https://hacs.xyz/), but can also be **manually installed** into the `custom_components` folder of your Home Assistant server if desired.
 
@@ -10,12 +10,13 @@ This integration allows Home Assistant to automatically detect the presence of *
 
 ### HACS Install
 
-> [!NOTE]  
-> The VegeHub integration has **not yet been merged** into HACS default integrations, so it does not currently show up in a search on HACS. Until it gets merged, the simplest way to install the VegeHub integration is as a **"Custom Repository"** on HACS. See [below](#custom-repository).
+The **easiest** way to install this integration is through the Home Assistant Community Store ([HACS](https://hacs.xyz/)). Instructions for installing HACS can be found at [their website](https://hacs.xyz/docs/use/).
 
-~~The **easiest** way to install this integration is through the Home Assistant Community Store ([HACS](https://hacs.xyz/)). Instructions for installing HACS can be found at [their website](https://hacs.xyz/docs/use/).~~
+Once HACS is installed, open it in Home Assistant, and search for **VegeHub**. Click the VegeHub integration, and then click `install`.
 
-~~Once HACS is installed, open it in Home Assistant, and search for **VegeHub**. Click the VegeHub integration, and then click `install`.~~
+You can also just hit this button, which should send you to the integration on your Home Assistant:
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?repository=ha-vegehub&owner=Vegetronix-Inc)
 
 ### Custom Repository
 
